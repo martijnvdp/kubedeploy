@@ -1,5 +1,5 @@
 git clone https://github.com/kubernetes-sigs/kubespray.git
-pip install -r kubespray/requirements.txt
+mkdir inventory
 cp -r kubespray/inventory/sample inventory/mycluster
 read -p "node ips (space seperated) ex 1.2.3.4 1.2.3.5:" nodeIPS
 declare -a IPS=($nodeIPS)
