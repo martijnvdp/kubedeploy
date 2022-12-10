@@ -1,5 +1,5 @@
 kind create cluster
-cp .\clusterctl.yaml ~/.cluster-api/clusterctl.yaml
+cp .\clusterctl-template.yaml ~/.cluster-api/clusterctl.yaml
 clusterctl init --infrastructure vsphere
 
 clusterctl generate cluster management `
