@@ -4,6 +4,12 @@
 - install ova templates from : https://github.com/kubernetes-sigs/cluster-api-provider-vsphere/blob/main/README.md#kubernetes-versions-with-published-ovas
 - or build your own https://github.com/kubernetes-sigs/image-builder
 
+## required tools
+`deploy-K8ClusterAPIRequirements` 
+- kind `curl.exe -Lo kind.exe https://kind.sigs.k8s.io/dl/v0.17.0/kind-windows-amd64`
+- kubectl `curl.exe -Lo kubectl.exe "https://dl.k8s.io/release/v1.26.0/bin/windows/amd64/kubectl.exe"`
+- clusterctl `curl -o clusterctl.exe "https://github.com/kubernetes-sigs/cluster-api/releases/download/v1.3.0/clusterctl-windows-amd64.exe"`
+
 ## deploy
 start powershell import module `import-module .\vsphere-cluster-api.psd1`
 - edit clusterctl.yaml
@@ -21,4 +27,5 @@ cleanup: `unpublish-K8Cluster
 
 ## refs
 https://github.com/kubernetes-sigs/cluster-api-provider-vsphere/blob/main/docs/getting_started.md#creating-a-test-management-cluster
-ttps://github.com/kubernetes-sigs/image-builder
+https://github.com/kubernetes-sigs/image-builder
+https://github.com/kubernetes-sigs/cluster-api
