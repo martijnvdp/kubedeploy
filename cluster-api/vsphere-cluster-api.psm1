@@ -25,6 +25,7 @@ function ConvertFrom-Base64 () {
 function deploy-K8ClusterAPIRequirements {
     curl.exe -Lo kind.exe https://kind.sigs.k8s.io/dl/v0.17.0/kind-windows-amd64
     curl.exe -Lo kubectl.exe "https://dl.k8s.io/release/v1.26.0/bin/windows/amd64/kubectl.exe"
+    curl -o clusterctl.exe "https://github.com/kubernetes-sigs/cluster-api/releases/download/v1.3.0/clusterctl-windows-amd64.exe"
 }
 
 function Get-KubeConfig {
