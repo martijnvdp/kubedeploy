@@ -1,0 +1,25 @@
+## custom vars for powershell module
+CLUSTER_NAME: "k8onvmware"
+CONTROLLER_COUNT: 1
+WORKER_COUNT: 3
+KUBE_CONFIG_OUT_FILE: "kube-config.json"
+KUBE_VERSION: "v1.21.1"
+## cluster api config
+## -- Controller settings -- ##
+# ~/.cluster-api/clusterctl.yaml
+VSPHERE_USERNAME: "administrator@vsphere.local"                    # The username used to access the remote vSphere endpoint
+VSPHERE_PASSWORD: "password"                                  # The password used to access the remote vSphere endpoint
+## -- Required workload cluster default settings -- ##
+VSPHERE_SERVER: "192.168.1.245"               # The vCenter server IP or FQDN
+VSPHERE_DATACENTER: "Datacenter"               # The vSphere datacenter to deploy the management cluster on
+VSPHERE_DATASTORE: "DATA"                      # The vSphere datastore to deploy the management cluster on
+VSPHERE_NETWORK: "VM Network"                  # The VM network to deploy the management cluster on
+VSPHERE_RESOURCE_POOL: "kubernetes"            # The vSphere resource pool for your VMs
+VSPHERE_TEMPLATE: "ubuntu-2004-kube-v1.21.11"  # The VM template to use for your management cluster.
+CONTROL_PLANE_ENDPOINT_IP: "192.168.1.250"     # the IP that kube-vip is going to use as a control plane endpoint
+VSPHERE_FOLDER: "kubernetes"                   # The VM folder for your VMs. Set to "" to use the root vSphere folder
+VSPHERE_TLS_THUMBPRINT: "92:FB:C1:68:85:...." # sha1 thumbprint of the vcenter certificate: openssl x509 -sha1 -fingerprint -in ca.crt -noout
+EXP_CLUSTER_RESOURCE_SET: "true"                              # This enables the ClusterResourceSet feature that we are using to deploy CSI
+# login  ssh capv@192.168.10.250:
+VSPHERE_SSH_AUTHORIZED_KEY: "ssh-rsa AAAAB3Nzc= ubuntu@ub"          # The public ssh authorized key on all machines in this cluster.
+VSPHERE_STORAGE_POLICY: ""       # This is the vSphere storage policy.
