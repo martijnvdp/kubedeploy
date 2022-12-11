@@ -35,22 +35,40 @@ function Get-KubeConfig {
     return (kubectl get "secret/$clustername-kubeconfig" -o json | ConvertFrom-Json).data.value | ConvertFrom-Base64
 }
 
+function get-podstatus {
+    param(
+        [Alias("Status")] 
+        [bool]$podstatus = $false,
+        [Alias("All")] 
+        [bool]$countall = $false
+    )
+    if (!$countall) {
+        return ((kubectl get pods -A -o json | ConvertFrom-Json).items.status.containerStatuses | Where-Object -Property ready -eq $podstatus | Measure-Object).count
+    }
+    else {
+        return ((kubectl get pods -A -o json | ConvertFrom-Json).items.status.containerStatuses | Measure-Object).count
+    }
+}
+
 function waitForPods {
-    while (((kubectl get pods -A -o json | ConvertFrom-Json).items.status.containerStatuses | Where-Object -Property ready -ne True | Measure-Object).count -ne 0) {
-        write-host "waiting for pods"
-        sleep 5;
+    $total = get-podstatus -All $True
+    for ($notready = get-podstatus; $notready -ne 0; $notready = get-podstatus) {
+        $pcs = ((($total - $notready) / $total) * 100)
+        Write-Progress -Activity "waiting for pods" -Status "$pcs% ready" -PercentComplete $pcs
+        sleep 3;
     }
     return
 }
+
 
 function waitForVMs {
     param(
         $clustername,
         $total
     )
-    while ((get-vm "$clustername*" | Measure-Object).count -ne $total) {
-        write-host "waiting for VMs"
-        sleep 5;
+    for ($count = (get-vm "$clustername*" | Measure-Object).count; $count -ne $total; $count = (get-vm "$clustername*" | Measure-Object).count) {
+        Write-Progress -Activity "waiting for VMS" -Status "$pcs% ready" -PercentComplete ($count / $total)*100
+        sleep 20;
     }
     return
 }
@@ -73,6 +91,8 @@ function deploy-K8Cluster {
         --worker-machine-count $config.WORKER_COUNT > cluster.yaml
     waitForPods
     # deploy cluster on vmware using local bootstrap cluster-api
+    code .\cluster.yaml
+    pause
     kubectl apply -f .\cluster.yaml
     waitForVMs "$($config.CLUSTER_NAME)*" ($config.CONTROLLER_COUNT + $config.WORKER_COUNT)
     Get-kubeConfig $config.CLUSTER_NAME | Out-file $config.KUBE_CONFIG_OUT_FILE
