@@ -60,14 +60,14 @@ function waitForPods {
     return
 }
 
-
 function waitForVMs {
     param(
         $clustername,
         $total
     )
     for ($count = (get-vm "$clustername*" | Measure-Object).count; $count -ne $total; $count = (get-vm "$clustername*" | Measure-Object).count) {
-        Write-Progress -Activity "waiting for VMS" -Status "$pcs% ready" -PercentComplete ($count / $total)*100
+        $pcs = (($count / $total) * 100)
+        Write-Progress -Activity "waiting for VMS" -Status "$pcs% ready" -PercentComplete $pcs
         sleep 20;
     }
     return
